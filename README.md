@@ -1,3 +1,12 @@
+# SIYONA'S UPDATE
+The name of the application: ThriveTime 
+A list of the team members: Siyona (Individual Project)
+A description of the project goals and features: 
+Project Goals: 
+Project Features: 
+A description of the overall architecture of the application:
+
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
