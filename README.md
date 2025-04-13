@@ -1,10 +1,24 @@
 # SIYONA'S UPDATE
-The name of the application: ThriveTime 
-A list of the team members: Siyona (Individual Project)
-A description of the project goals and features: 
-Project Goals: 
-Project Features: 
+The name of the application: Thrive Time
+
+A list of the team members: Siyona Raskar (Individual Project)
+
+A description of the project goals and features:
+
+Project Goals:
+- Add, edit, and delete tasks. Tag and prioritize tasks. Mark tasks as completed. Let users set a due date for each task.
+
+Project Features:
+- Priority Levels (high, medium, low with color indications)
+- Tags / Categories (School, Work, Personal)
+- Motivational Quote of the day
+- User picks the deadlines and will be able to edit
+- Background Lofi Music
+
 A description of the overall architecture of the application:
+
+- 4 pages: Create Task Page, View ALL Tasks Page, View TODAY'S Tasks Page, Completed Tasks Page
+- Pop up when app is opened with motivational quote
 
 
 # Welcome to your Expo app 👋
