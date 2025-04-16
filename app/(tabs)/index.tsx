@@ -1,74 +1,102 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, ScrollView, View, Text, TextInput, Dimensions, AppRegistry, TouchableHighlight, ImageBackground } from 'react-native';
+import React, { Component } from 'react';
+import Constants from 'expo-constants';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+// import { HelloWave } from '@/components/HelloWave';
+// import { ThemedText } from '@/components/ThemedText';
+// import { ThemedView } from '@/components/ThemedView';
 
-export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+export default class App extends Component {
+
+  state = {
+      image: ['https://codehs.com/uploads/a2f95eb24e7bc6c06a5d0918c8646c94', 'https://codehs.com/uploads/72502723cd8b84c3d968d56acda1192d', 'https://codehs.com/uploads/78b825406ced9820a36b6547a8d53650'],
+      message: ['Who is the winner?', 'Capitals Wins!', 'Rangers Win!'],
+      index: 0,
+  }
+
+  capitalsWin = () => {
+      this.setState({ 
+          index: 1,
+      })
+  }
+  
+  rangersWin = () => {
+      this.setState({ 
+          index: 2,
+      })
+  }
+  
+  render() {
+      return (
+          <View style={styles.container}>
+              <ImageBackground
+                  style={styles.background}
+                  source={this.state.image[this.state.index]}
+              >
+                  <View style={styles.titleBox}>
+                      <Text style={styles.title}>
+                          {this.state.message[this.state.index]}
+                      </Text>
+                  </View>
+                  <View style={styles.buttonBox}>
+                      <TouchableHighlight
+                          onPress={this.capitalsWin}
+                      >
+                          <View style={styles.button}>
+                              <Text style={styles.buttonText}>
+                                  Washington Capitals
+                              </Text>
+                          </View>
+                      </TouchableHighlight>
+                      
+                      <TouchableHighlight
+                          onPress={this.rangersWin}
+                      >
+                          <View style={styles.button}>
+                              <Text style={styles.buttonText}>
+                                  New York Rangers
+                              </Text>
+                          </View>
+                      </TouchableHighlight>
+                  </View>
+              </ImageBackground>
+          </View>
+      );
+  }
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+      flex: 1,
+      paddingTop: Constants.statusBarHeight,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  background: {
+      flex: 1,
+      justifyContent: 'space-between'
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  titleBox: {
+      justifyContent: 'center'
   },
+  buttonBox: {
+      flexDirection: 'row',
+      justifyContent: 'center'
+  },
+  button: {
+      height: 50,
+      width: 125,
+      backgroundColor: 'blue',
+      margin: 12,
+      justifyContent: 'center'
+  },
+  title: {
+      fontSize: 35,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      color: 'red'
+  },
+  buttonText: {
+      fontSize: 20,
+      textAlign: 'center',
+      color: 'white'
+  }
 });

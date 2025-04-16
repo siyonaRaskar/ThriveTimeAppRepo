@@ -19,6 +19,8 @@ A description of the overall architecture of the application:
 
 - 4 pages: Create Task Page, View ALL Tasks Page, View TODAY'S Tasks Page, Completed Tasks Page
 - Pop up when app is opened with motivational quote
+- The main data structure in my app will be an array called tasks, where each element is an object representing a single task. Each task object includes properties like name, deadline, and “completed” to store important information. This structure allows me to easily filter and map through the array to display the correct tasks on each screen based on their completion status or deadline.
+
 
 
 # Welcome to your Expo app 👋
