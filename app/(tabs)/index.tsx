@@ -1,102 +1,148 @@
-import { Image, StyleSheet, Platform, ScrollView, View, Text, TextInput, Dimensions, AppRegistry, TouchableHighlight, ImageBackground } from 'react-native';
-import React, { Component } from 'react';
+import {Image, Modal, StyleSheet, Platform, ScrollView, View, Text, TextInput, Dimensions, AppRegistry, TouchableHighlight, ImageBackground, Button} from 'react-native';
+import React, { Component, useEffect } from 'react';
 import Constants from 'expo-constants';
+import { Audio } from 'expo-av';
+
+
+let deviceHeight = Dimensions.get('window').height;
+let deviceWidth = Dimensions.get('window').width;
 
 // import { HelloWave } from '@/components/HelloWave';
 // import { ThemedText } from '@/components/ThemedText';
 // import { ThemedView } from '@/components/ThemedView';
 
-export default class App extends Component {
+// TRY IMPLEMENTING MUSIC LAST!!!! (kinda complicated)
+export default class App extends Component {    
+   
+    state = {
+        tasks: [
+            {
+                name: 'Example Task!',
+                deadline: '5/3/25',
+                completed: false
+            }
+        ],
+        welcomePageDisplay: true,
+        createTaskPageDisplay: false,
+        viewAllTasksPageDisplay: false,
+        viewTodaysTasksPageDisplay: false,
+        viewCompletedTasksPageDisplay: false,
+    };
 
-  state = {
-      image: ['https://codehs.com/uploads/a2f95eb24e7bc6c06a5d0918c8646c94', 'https://codehs.com/uploads/72502723cd8b84c3d968d56acda1192d', 'https://codehs.com/uploads/78b825406ced9820a36b6547a8d53650'],
-      message: ['Who is the winner?', 'Capitals Wins!', 'Rangers Win!'],
-      index: 0,
-  }
+    handleWelcomePagePress = () => this.setState(state => ({
+        welcomePageDisplay: true,
+        createTaskPageDisplay: false,
+        viewAllTasksPageDisplay: false,
+        viewTodaysTasksPageDisplay: false,
+        viewCompletedTasksPageDisplay: false,
+    }));
 
-  capitalsWin = () => {
-      this.setState({ 
-          index: 1,
-      })
-  }
+    handleCreateTaskPagePress = () => this.setState(state => ({
+        welcomePageDisplay: false,
+        createTaskPageDisplay: true,
+        viewAllTasksPageDisplay: false,
+        viewTodaysTasksPageDisplay: false,
+        viewCompletedTasksPageDisplay: false,
+    }));
+
+    handleViewAllTasksPagePress = () => this.setState(state => ({
+        welcomePageDisplay: false,
+        createTaskPageDisplay: false,
+        viewAllTasksPageDisplay: true,
+        viewTodaysTasksPageDisplay: false,
+        viewCompletedTasksPageDisplay: false,
+    }));
   
-  rangersWin = () => {
-      this.setState({ 
-          index: 2,
-      })
-  }
-  
-  render() {
-      return (
-          <View style={styles.container}>
-              <ImageBackground
-                  style={styles.background}
-                  source={this.state.image[this.state.index]}
-              >
-                  <View style={styles.titleBox}>
-                      <Text style={styles.title}>
-                          {this.state.message[this.state.index]}
-                      </Text>
-                  </View>
-                  <View style={styles.buttonBox}>
-                      <TouchableHighlight
-                          onPress={this.capitalsWin}
-                      >
-                          <View style={styles.button}>
-                              <Text style={styles.buttonText}>
-                                  Washington Capitals
-                              </Text>
-                          </View>
-                      </TouchableHighlight>
-                      
-                      <TouchableHighlight
-                          onPress={this.rangersWin}
-                      >
-                          <View style={styles.button}>
-                              <Text style={styles.buttonText}>
-                                  New York Rangers
-                              </Text>
-                          </View>
-                      </TouchableHighlight>
-                  </View>
-              </ImageBackground>
-          </View>
-      );
-  }
-}
+    handleViewTodaysTasksPagePress = () => this.setState(state => ({
+        welcomePageDisplay: false,
+        createTaskPageDisplay: false,
+        viewAllTasksPageDisplay: false,
+        viewTodaysTasksPageDisplay: true,
+        viewCompletedTasksPageDisplay: false,
+    }));
 
-const styles = StyleSheet.create({
-  container: {
-      flex: 1,
-      paddingTop: Constants.statusBarHeight,
-  },
-  background: {
-      flex: 1,
-      justifyContent: 'space-between'
-  },
-  titleBox: {
-      justifyContent: 'center'
-  },
-  buttonBox: {
-      flexDirection: 'row',
-      justifyContent: 'center'
-  },
-  button: {
-      height: 50,
-      width: 125,
-      backgroundColor: 'blue',
-      margin: 12,
-      justifyContent: 'center'
-  },
-  title: {
-      fontSize: 35,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      color: 'red'
-  },
-  buttonText: {
-      fontSize: 20,
-      textAlign: 'center',
-      color: 'white'
-  }
-});
+    handleViewCompletedTasksPagePress = () => this.setState(state => ({
+        welcomePageDisplay: false,
+        createTaskPageDisplay: false,
+        viewAllTasksPageDisplay: false,
+        viewTodaysTasksPageDisplay: false,
+        viewCompletedTasksPageDisplay: true,
+    }));
+
+    
+
+    render() {
+        return (
+            <View style={styles.container}>
+
+                <Modal transparent={true} visible={this.state.welcomePageDisplay}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalBox}>
+                            <Text style={styles.tttTextStyle}>
+                                Time To Thrive!
+                            </Text>
+                            <Text style={styles.modalQuote}>
+                                "Action is the foundational key to all success." 
+                            </Text>
+                            <Text style={styles.modalName}>- Pablo Picasso </Text>
+                            <View style={styles.space}>
+
+                            </View>
+                            <Button title="get started!" onPress={() => this.setState({ welcomePageDisplay: false })} />
+                        </View>
+                    </View>
+                </Modal>
+
+
+            </View>
+        );
+    }
+    }
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+        }, 
+        modalBox: {
+            width: deviceWidth * 0.8,
+            backgroundColor: 'white',
+            padding: 20,
+            borderRadius: 15,
+            alignItems: 'center',
+            shadowColor: '#FFD1DC',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 5,
+            elevation: 5, 
+          },
+          modalQuote: {
+            fontSize: 16,
+            //fontStyle: 'italic',
+            marginTop: 13,
+            textAlign: 'center',
+            color: '#8A2BE2',
+            fontFamily: 'Cochin',
+          },
+          modalName: {
+            fontSize: 14,
+            marginTop: 5,
+            color: '#C71585',
+            fontFamily: 'Georgia',
+          }, 
+          modalContainer: {
+            height: deviceHeight,
+            width: deviceWidth,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#FFF0F5'
+          },
+          tttTextStyle: {
+            fontSize: 24, 
+            fontWeight: 'bold',
+            color: '#FF69B4',
+          },
+          space: {
+            height: deviceHeight/9,
+          }
+
+    });
