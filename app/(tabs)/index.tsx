@@ -74,7 +74,6 @@ export default class App extends Component {
     render() {
         return (
             <View style={styles.container}>
-
                 <Modal transparent={true} visible={this.state.welcomePageDisplay}>
                     <View style={styles.modalContainer}>
                         <View style={styles.modalBox}>
@@ -92,8 +91,6 @@ export default class App extends Component {
                         </View>
                     </View>
                 </Modal>
-
-
             </View>
         );
     }
