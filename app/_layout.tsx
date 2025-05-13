@@ -31,8 +31,9 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         {/* Removed Tabs and added index to create my own custom navigation bar. */}
-        <Stack.Screen name="index" options={{ headerShown: false }} /> 
-        <Stack.Screen name="+not-found" />
+        {/* When the app loads, index.tsx is invoked here. */}
+        <Stack.Screen name="index" options={{ headerShown: false }} />  
+        {/* <Stack.Screen name="+not-found" /> */}
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

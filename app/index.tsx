@@ -46,6 +46,34 @@ export default class App extends Component {
     });
   };
 
+  addTask = () => {
+    const newTaskName = this.state.newTaskName;
+    const newTaskDeadline = this.state.newTaskDeadline;
+    if(newTaskName && newTaskDeadline) // forces user to enter both task name and task deadline
+    {
+      const newTask = {
+        // creating a new object with the inputted task name and task deadline to add to tasks array
+        name: newTaskName,
+        deadline: newTaskDeadline,
+        completed: false,
+      };
+
+      
+      // this declaration of a constant holding a function is new concept #1
+      // used VS code's feature of "quick fix" to fix the type given to parameter prevState
+      const changeState = (prevState: { tasks: any; }) => ({
+        tasks: [...prevState.tasks, newTask], // spread operator is new concept #2
+        newTaskName: "",
+        newTaskDeadline: "",
+        createTaskPageDisplay: false,
+        viewAllTasksPageDisplay: true,
+      });
+
+      this.setState(changeState); // passing the function to a function!
+    }
+
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -59,10 +87,7 @@ export default class App extends Component {
               </Text>
               <Text style={styles.modalName}>Pablo Picasso</Text>
               <View style={styles.space}></View>
-              <Button
-                title="get started!"
-                onPress={() => this.setPage("all")}
-              />
+              <Button title="get started!" onPress={() => this.setPage("all")} />
             </View>
           </View>
         </Modal>
@@ -72,11 +97,36 @@ export default class App extends Component {
           <Button title="All Tasks" onPress={() => this.setPage("all")} />
           <Button title="Add Task" onPress={() => this.setPage("create")} />
           <Button title="Today's Tasks" onPress={() => this.setPage("today")} />
-          <Button
-            title="Completed Tasks"
-            onPress={() => this.setPage("completed")}
-          />
+          <Button title="Completed Tasks" onPress={() => this.setPage("completed")} />
         </View>
+
+        {/* Content */}
+        {this.state.createTaskPageDisplay && (
+          <>
+            <Text style = {styles.pageTitle}>
+              Create New Task
+            </Text>
+
+            {/* inlining handler function as opposed to declaring a new function separately is new concept #3 */}
+            <TextInput 
+              style = {styles.input}
+              placeholder="Task Name"
+              value={this.state.newTaskName}
+              onChangeText={(text) => this.setState({ newTaskName: text })}
+            />
+
+            <TextInput 
+              style = {styles.input}
+              placeholder="Deadline (YYYY-MM-DD)"
+              value={this.state.newTaskDeadline}
+              onChangeText={(text) => this.setState({ newTaskDeadline: text })}
+            />
+
+            <Button title="Add Task" onPress={this.addTask} />
+
+          </>
+        )}
+
       </View>
     );
   }
@@ -130,4 +180,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#ccc",
   },
+  pageTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#aaa",
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+  }
 });
