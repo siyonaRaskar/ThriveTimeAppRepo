@@ -18,9 +18,34 @@ export default class App extends Component {
   state = {
     tasks: [
       {
-        name: "Example Task",
-        deadline: "2025-05-03",
+        name: "TASK ONE",
+        deadline: "2025-05-07",
         completed: false,
+      },
+      {
+        name: "TASK TWO",
+        deadline: "2025-05-10",
+        completed: true,
+      },
+      {
+        name: "TASK THREE",
+        deadline: "2025-05-13",
+        completed: false,
+      },
+      {
+        name: "TASK FOUR",
+        deadline: "2025-05-13",
+        completed: true,
+      },
+      {
+        name: "TASK FIVE",
+        deadline: "2025-05-16",
+        completed: false,
+      },
+      {
+        name: "TASK SIX",
+        deadline: "2025-05-19",
+        completed: true,
       },
     ],
     welcomePageDisplay: true,
@@ -30,9 +55,10 @@ export default class App extends Component {
     viewCompletedTasksPageDisplay: false,
     newTaskName: "",
     newTaskDeadline: "",
-    editingIndex: null,
-    editingName: "",
-    editingDeadline: "",
+    // editingIndex: null,
+    // editingName: "",
+    // editingDeadline: "",
+    editMode: false,
   };
 
   // Navigation button click handler
@@ -57,7 +83,6 @@ export default class App extends Component {
         deadline: newTaskDeadline,
         completed: false,
       };
-
       
       // this declaration of a constant holding a function is new concept #1
       // used VS code's feature of "quick fix" to fix the type given to parameter prevState
@@ -73,6 +98,216 @@ export default class App extends Component {
     }
 
   }
+
+   renderAllTasks = () => {
+    const todayDate = new Date().toLocaleDateString("en-CA");
+    
+    const viewsToReturn = this.state.tasks.map((task, index) => { // an array of views new concept #4
+      const isLate = !task.completed && task.deadline < todayDate;
+
+      let backgroundColor = "#f0f0f0";
+      if (task.completed) backgroundColor = "#d0f5d3"; // light green
+      else if (isLate) backgroundColor = "#f8d7da"; // light red
+
+      return (
+        <View
+          style={{
+            marginBottom: 15,
+            padding: 15,
+            backgroundColor,
+            borderRadius: 10,
+          }}
+        >
+          
+            <Text style={{ fontSize: 18 }}>{task.name}</Text>
+            <Text style={{ color: "#888" }}>Deadline: {task.deadline}</Text>
+            <Text style={{ color: task.completed ? "green" : "red" }}>
+              Status:{" "}
+              {task.completed ? "Completed" : isLate ? "Late" : "Incomplete"}
+            </Text>
+
+            {/* Checkbox */}
+            <TouchableOpacity
+              onPress={() => {
+                const updatedTasks = [...this.state.tasks];
+                updatedTasks[index].completed = !updatedTasks[index].completed;
+                this.setState({ tasks: updatedTasks });
+              }}
+              style={{
+                marginVertical: 5,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontSize: 16 }}>
+                {task.completed ? "✅" : "⬜"} Mark as{" "}
+                {task.completed ? "Incomplete" : "Completed"}
+              </Text>
+            </TouchableOpacity>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 10,
+              }}
+            >
+            </View>
+          
+        </View>
+      );
+    });
+    return viewsToReturn; // this function will actually return the array of views 
+  };
+
+   renderTodaysTasks = () => {
+    const todayDate = new Date().toLocaleDateString("en-CA");
+
+    const viewsToReturn = this.state.tasks.map((task, index) => { // an array of views new concept #4
+      const isLate = !task.completed && task.deadline < todayDate;
+      
+      if(task.deadline == todayDate)
+      {
+        let backgroundColor = "#f0f0f0";
+        if (task.completed) backgroundColor = "#d0f5d3"; // light green
+        else if (isLate) backgroundColor = "#f8d7da"; // light red
+
+        return (
+          <View
+            style={{
+              marginBottom: 15,
+              padding: 15,
+              backgroundColor,
+              borderRadius: 10,
+            }}
+          >
+            
+              <Text style={{ fontSize: 18 }}>{task.name}</Text>
+              <Text style={{ color: "#888" }}>Deadline: {task.deadline}</Text>
+              <Text style={{ color: task.completed ? "green" : "red" }}>
+                Status:{" "}
+                {task.completed ? "Completed" : isLate ? "Late" : "Incomplete"}
+              </Text>
+
+              {/* Checkbox */}
+              <TouchableOpacity
+                onPress={() => {
+                  const updatedTasks = [...this.state.tasks];
+                  updatedTasks[index].completed = !updatedTasks[index].completed;
+                  this.setState({ tasks: updatedTasks });
+                }}
+                style={{
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ fontSize: 16 }}>
+                  {task.completed ? "✅" : "⬜"} Mark as{" "}
+                  {task.completed ? "Incomplete" : "Completed"}
+                </Text>
+              </TouchableOpacity>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 10,
+                }}
+              >
+              </View>
+            
+          </View>
+        );
+      }
+      else
+      {
+        return(
+          <View>
+          </View>
+        )
+      }
+
+    });
+    // still goes at the end of function 
+    return viewsToReturn; // this function will actually return the array of views 
+  };
+
+   renderCompletedTasks = () => {
+    const todayDate = new Date().toLocaleDateString("en-CA");
+
+    const viewsToReturn = this.state.tasks.map((task, index) => { // an array of views new concept #4
+      const isLate = !task.completed && task.deadline < todayDate;
+      
+      if(task.completed)
+      {
+        let backgroundColor = "#f0f0f0";
+        if (task.completed) backgroundColor = "#d0f5d3"; // light green
+        else if (isLate) backgroundColor = "#f8d7da"; // light red
+
+        return (
+          <View
+            style={{
+              marginBottom: 15,
+              padding: 15,
+              backgroundColor,
+              borderRadius: 10,
+            }}
+          >
+            
+              <Text style={{ fontSize: 18 }}>{task.name}</Text>
+              <Text style={{ color: "#888" }}>Deadline: {task.deadline}</Text>
+              <Text style={{ color: task.completed ? "green" : "red" }}>
+                Status:{" "}
+                {task.completed ? "Completed" : isLate ? "Late" : "Incomplete"}
+              </Text>
+
+              {/* Checkbox */}
+              <TouchableOpacity
+                onPress={() => {
+                  const updatedTasks = [...this.state.tasks];
+                  updatedTasks[index].completed = !updatedTasks[index].completed;
+                  this.setState({ tasks: updatedTasks });
+                }}
+                style={{
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ fontSize: 16 }}>
+                  {task.completed ? "✅" : "⬜"} Mark as{" "}
+                  {task.completed ? "Incomplete" : "Completed"}
+                </Text>
+              </TouchableOpacity>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 10,
+                }}
+              >
+              </View>
+            
+          </View>
+        );
+      }
+      else
+      {
+        return(
+          <View>
+          </View>
+        )
+      }
+
+    });
+    // still goes at the end of function 
+    return viewsToReturn; // this function will actually return the array of views 
+  };
+
+
+  
 
   render() {
     return (
@@ -94,15 +329,15 @@ export default class App extends Component {
 
         {/* Top Nav Buttons */}
         <View style={styles.navBar}>
-          <Button title="All Tasks" onPress={() => this.setPage("all")} />
-          <Button title="Add Task" onPress={() => this.setPage("create")} />
-          <Button title="Today's Tasks" onPress={() => this.setPage("today")} />
-          <Button title="Completed Tasks" onPress={() => this.setPage("completed")} />
+          <Button title="All" onPress={() => this.setPage("all")} />
+          <Button title="Add" onPress={() => this.setPage("create")} />
+          <Button title="Today's" onPress={() => this.setPage("today")} />
+          <Button title="Completed" onPress={() => this.setPage("completed")} />
         </View>
 
         {/* Content */}
         {this.state.createTaskPageDisplay && (
-          <>
+          <View>
             <Text style = {styles.pageTitle}>
               Create New Task
             </Text>
@@ -122,10 +357,36 @@ export default class App extends Component {
               onChangeText={(text) => this.setState({ newTaskDeadline: text })}
             />
 
-            <Button title="Add Task" onPress={this.addTask} />
-
-          </>
+            <Button title="Add Task" onPress={() => this.addTask()} />
+            
+          </View>
+          
         )}
+
+        <ScrollView style={{ flex: 1, backgroundColor: "#fff", padding: 20 }}>
+          {this.state.viewAllTasksPageDisplay && !this.state.editMode && (
+            <View>
+              <Text style={styles.pageTitle}>All Tasks</Text>
+              {this.renderAllTasks()}
+            </View>
+          )}
+
+          {this.state.viewTodaysTasksPageDisplay && !this.state.editMode && (
+            <View>
+              <Text style={styles.pageTitle}>Today's Tasks</Text>
+              {this.renderTodaysTasks()}
+            </View>
+          )}
+
+          {this.state.viewCompletedTasksPageDisplay && !this.state.editMode && (
+            <View>
+              <Text style={styles.pageTitle}>Completed Tasks</Text>
+              {this.renderCompletedTasks()}
+            </View>
+          )}
+        </ScrollView>
+
+      
 
       </View>
     );
@@ -175,7 +436,7 @@ const styles = StyleSheet.create({
   navBar: {
     flexDirection: "row",
     justifyContent: "space-around",
-    padding: 10,
+    padding: 5,
     backgroundColor: "#f8f8f8",
     borderBottomWidth: 1,
     borderColor: "#ccc",
